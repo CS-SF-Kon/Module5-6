@@ -1,5 +1,11 @@
 ﻿namespace Module5_6
 {
+    enum DelType
+    {
+        HomeDelivery = 1,
+        ShopDelivery,
+        PPDelivery
+    }
     enum HomeDelCity
     {
         Moscow,
@@ -33,6 +39,7 @@
     class HomeDelivery : Delivery
     {
         public HomeDelCity City;
+        
     }
 
     class PickPointDelivery : Delivery
@@ -45,35 +52,37 @@
         public ShopDelCity City;
     }
 
-    class Order<TDelivery, TStruct> where TDelivery : Delivery
-    {
-        public TDelivery Delivery;
-
-        public Guid Number;
-
-        public string Description;
-
-        public void DisplayAddress()
-        {
-            Console.WriteLine(Delivery.Address);
-        }
-
-        // ... Другие поля
-    }
+    
 
     internal class Program
     {
+        static Order<Delivery> MakeOrder()
+        {
+            var order = new Order<Delivery>();
+            order.SetNumber();
+            
+
+            order.Delivery = new HomeDelivery();
+            order.Delivery.Address = Console.ReadLine();
+            
+
+            return order;
+        }
         static void Main(string[] args)
         {
-            Order<HomeDelivery, int> Ord1 = new();
-            
-            Ord1.Number = Guid.NewGuid();
-            Console.WriteLine(Ord1.Number);
-            Ord1.Delivery.City = HomeDelCity.Kazan;
+            var Ord1 = MakeOrder();
+            Ord1.DisplayAddress();
+            Console.WriteLine(Ord1.number);
 
+            Asus pc = new Asus();
+            pc.Set();
+            Console.WriteLine(pc.price);
+            Console.WriteLine(pc.type);
+            Console.WriteLine(pc.name);
             
-            Console.WriteLine(Ord1.Delivery.City);
-
+            
         }
+
+        
     }
 }
